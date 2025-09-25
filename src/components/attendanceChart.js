@@ -1,8 +1,8 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip);
 
 function AttendanceChart({ attended, bunked }) {
     const total = attended + bunked;
@@ -13,38 +13,36 @@ function AttendanceChart({ attended, bunked }) {
         datasets: [
             {
                 data: [attended, bunked],
-                backgroundColor: ["#27ae60", "#e74c3c"], // green & red
-                borderWidth: 1,
-            },
-        ],
+                backgroundColor: ["#27ae60", "#e74c3c"],
+                borderWidth: 1
+            }
+        ]
     };
 
     const options = {
-        cutout: "70%", // makes it donut-shaped
-        plugins: {
-            legend: {
-                display: false, // hides side legend
-            },
-        },
+        cutout: "70%",
+        plugins: { legend: { display: false } },
+        maintainAspectRatio: true
     };
 
     return (
-        <div style={{ width: "250px", margin: "20px auto", textAlign: "center" }}>
+        <div style={{ width: 180, height: 180, position: "relative" }}>
             <Doughnut data={data} options={options} />
-
-            {/* Counter in the middle */}
             <div
                 style={{
-                    position: "relative",
-                    top: "-150px",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    color: "#333",
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    textAlign: "center",
+                    fontSize: 16,
+                    fontWeight: "700",
+                    color: "#222"
                 }}
             >
                 {percentage}% <br />
-                <span style={{ fontSize: "14px", fontWeight: "normal" }}>
-                    {attended}/{total} Classes
+                <span style={{ fontSize: 13, fontWeight: 500 }}>
+                    {attended}/{total || 0}
                 </span>
             </div>
         </div>
